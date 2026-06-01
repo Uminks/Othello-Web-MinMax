@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es" id="htmlRoot">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,142 +8,9 @@
       content="Othello moderno con IA minimax, animaciones y modo jugador contra jugador."
     />
     <title>Othello Minimax</title>
-    <link rel="stylesheet" href="./src/styles.css?v=20260601f" />
   </head>
   <body>
-    <main class="shell">
-      <section class="topbar" aria-label="Estado de partida">
-        <div>
-          <p class="eyebrow" id="eyebrowText">Othello con algoritmo minimax</p>
-          <h1>Othello</h1>
-        </div>
-
-        <div class="scoreboard" aria-live="polite">
-          <article class="score-card score-card-dark" id="blackScoreCard">
-            <span class="disc-mini dark"></span>
-            <div>
-              <small id="blackLabel">Tu</small>
-              <strong id="blackScore">2</strong>
-            </div>
-          </article>
-          <article class="score-card score-card-light" id="whiteScoreCard">
-            <span class="disc-mini light"></span>
-            <div>
-              <small id="whiteLabel">IA</small>
-              <strong id="whiteScore">2</strong>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section class="game-layout">
-        <aside class="control-panel" aria-label="Controles de partida">
-          <div class="status-card">
-            <span class="status-dot" id="turnDot"></span>
-            <div>
-              <p id="turnLabel">Turno de Negras</p>
-              <strong id="gameMessage">Elige una casilla marcada.</strong>
-            </div>
-          </div>
-
-          <div class="control-group">
-            <label for="languageSelect" id="languageLabel">Idioma</label>
-            <select id="languageSelect">
-              <option value="es">Español</option>
-              <option value="en">English</option>
-            </select>
-          </div>
-
-          <div class="control-group">
-            <label for="modeSelect" id="modeLabel">Modo</label>
-            <select id="modeSelect">
-              <option value="ai">Jugador vs IA</option>
-              <option value="pvp">Jugador vs jugador</option>
-            </select>
-          </div>
-
-          <div class="control-group">
-            <label for="playerColorSelect" id="playerColorLabel">Tu color</label>
-            <select id="playerColorSelect">
-              <option value="1">Negras</option>
-              <option value="-1">Blancas</option>
-            </select>
-          </div>
-
-          <div class="control-group">
-            <label for="difficultySelect" id="difficultyLabel">Dificultad IA</label>
-            <select id="difficultySelect">
-              <option value="2">Ligera</option>
-              <option value="3" selected>Competitiva</option>
-              <option value="4">Profunda</option>
-              <option value="5">Experta</option>
-            </select>
-          </div>
-
-          <div class="control-actions">
-            <button class="button primary" id="newGameButton" type="button">
-              Nueva partida
-            </button>
-            <button class="button ghost" id="undoButton" type="button">
-              Deshacer
-            </button>
-          </div>
-
-          <div class="metrics" aria-label="Metricas del tablero">
-            <div>
-              <span id="blackMoves">4</span>
-              <small id="blackMovesLabel">jugadas negras</small>
-            </div>
-            <div>
-              <span id="whiteMoves">4</span>
-              <small id="whiteMovesLabel">jugadas blancas</small>
-            </div>
-            <div>
-              <span id="emptyCells">60</span>
-              <small id="emptyCellsLabel">casillas libres</small>
-            </div>
-          </div>
-        </aside>
-
-        <section class="board-section" aria-label="Tablero de Othello">
-          <div class="board-frame">
-            <div class="board" id="board" role="grid" aria-label="Tablero 8 por 8"></div>
-            <div class="endgame-overlay" id="endgameOverlay" aria-live="polite" hidden>
-              <div class="endgame-burst" aria-hidden="true">
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-              <div class="endgame-card">
-                <span class="endgame-kicker" id="endgameKicker">Resultado</span>
-                <strong id="endgameTitle">Ganan Negras</strong>
-                <p id="endgameDetail">Marcador final 32-32.</p>
-                <div class="endgame-score">
-                  <span id="endgameBlackScore">32</span>
-                  <span aria-hidden="true">:</span>
-                  <span id="endgameWhiteScore">32</span>
-                </div>
-                <button class="button primary" id="playAgainButton" type="button">
-                  Nueva partida
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <aside class="activity-panel" aria-label="Actividad de partida">
-          <div class="panel-heading">
-            <h2 id="activityTitle">Actividad</h2>
-            <span id="aiBadge">IA lista</span>
-          </div>
-          <ol class="move-list" id="moveList"></ol>
-        </aside>
-      </section>
-    </main>
-
-    <script type="module" src="./src/app.js?v=20260601f"></script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

@@ -4,8 +4,9 @@
   "private": true,
   "description": "Othello moderno en JavaScript con IA minimax y despliegue estatico para Vercel.",
   "scripts": {
-    "start": "python3 -m http.server 5174",
-    "dev": "python3 -m http.server 5174"
+    "dev": "vite --host 127.0.0.1 --port 5174",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 5174"
   },
   "keywords": [
     "othello",
@@ -15,5 +16,14 @@
     "vercel"
   ],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "framer-motion": "^11.18.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^6.0.7"
+  }
 }

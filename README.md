@@ -6,11 +6,12 @@ https://othello-web-min-max.vercel.app/
 
 ## Español
 
-Version moderna y web del juego clasico de Othello/Reversi, con reglas completas, modo jugador vs jugador y jugador vs IA usando minimax con poda alfa-beta.
+Version moderna y web del juego clasico de Othello/Reversi, con reglas completas, modo jugador vs jugador y jugador vs IA usando minimax con poda alfa-beta. La interfaz esta migrada a Vite + React + Framer Motion para tener componentes mas limpios y animaciones mas fluidas.
 
 ### Ejecutar localmente
 
 ```bash
+npm install
 npm run dev
 ```
 
@@ -20,7 +21,11 @@ Luego abre:
 http://127.0.0.1:5174
 ```
 
-No requiere instalar dependencias para funcionar.
+Para generar la version de produccion:
+
+```bash
+npm run build
+```
 
 ### Desplegar en Vercel gratis
 
@@ -29,10 +34,10 @@ No requiere instalar dependencias para funcionar.
 3. Usa estos valores:
 
 ```text
-Framework Preset: Other
-Build Command: vacio
-Output Directory: .
-Install Command: vacio
+Framework Preset: Vite
+Build Command: npm run build
+Output Directory: dist
+Install Command: npm install
 ```
 
 Tambien puedes arrastrar la carpeta al panel de Vercel si prefieres un despliegue manual.
@@ -41,7 +46,8 @@ Tambien puedes arrastrar la carpeta al panel de Vercel si prefieres un despliegu
 
 - Tablero responsive de 8x8.
 - Jugadas validas resaltadas.
-- Animaciones al colocar y transformar fichas de un color a otro.
+- UI creada con React y Framer Motion.
+- Animaciones fluidas al colocar y transformar fichas de un color a otro.
 - Animacion final con resultado de victoria, derrota o empate.
 - Interfaz alternable entre espanol e ingles.
 - Modo Jugador vs IA y Jugador vs jugador.
@@ -51,11 +57,12 @@ Tambien puedes arrastrar la carpeta al panel de Vercel si prefieres un despliegu
 
 ## English
 
-A modern web version of the classic Othello/Reversi game, with complete rules, player vs player mode, and player vs AI mode powered by minimax with alpha-beta pruning.
+A modern web version of the classic Othello/Reversi game, with complete rules, player vs player mode, and player vs AI mode powered by minimax with alpha-beta pruning. The interface now uses Vite + React + Framer Motion for cleaner components and smoother animations.
 
 ### Run Locally
 
 ```bash
+npm install
 npm run dev
 ```
 
@@ -65,7 +72,11 @@ Then open:
 http://127.0.0.1:5174
 ```
 
-No dependency installation is required to run the project.
+To generate the production build:
+
+```bash
+npm run build
+```
 
 ### Deploy Free On Vercel
 
@@ -74,10 +85,10 @@ No dependency installation is required to run the project.
 3. Use these settings:
 
 ```text
-Framework Preset: Other
-Build Command: empty
-Output Directory: .
-Install Command: empty
+Framework Preset: Vite
+Build Command: npm run build
+Output Directory: dist
+Install Command: npm install
 ```
 
 You can also drag and drop the folder into the Vercel dashboard for a manual deployment.
@@ -86,7 +97,8 @@ You can also drag and drop the folder into the Vercel dashboard for a manual dep
 
 - Responsive 8x8 board.
 - Highlighted valid moves.
-- Animated piece placement and color transformation.
+- UI built with React and Framer Motion.
+- Smooth piece placement and color transformation animations.
 - Endgame animation for win, loss, or tie results.
 - Interface switchable between Spanish and English.
 - Player vs AI and player vs player modes.
