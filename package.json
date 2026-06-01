@@ -1,0 +1,19 @@
+{
+  "name": "othello-minimax-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Othello moderno en JavaScript con IA minimax y despliegue estatico para Vercel.",
+  "scripts": {
+    "start": "python3 -m http.server 5174",
+    "dev": "python3 -m http.server 5174"
+  },
+  "keywords": [
+    "othello",
+    "reversi",
+    "minimax",
+    "javascript",
+    "vercel"
+  ],
+  "author": "",
+  "license": "MIT"
+}
