@@ -41,7 +41,7 @@ Tambien puedes arrastrar la carpeta al panel de Vercel si prefieres un despliegu
 
 - Tablero responsive de 8x8.
 - Jugadas validas resaltadas.
-- Animaciones al colocar y voltear fichas.
+- Animaciones al colocar y transformar fichas de un color a otro.
 - Animacion final con resultado de victoria, derrota o empate.
 - Interfaz alternable entre espanol e ingles.
 - Modo Jugador vs IA y Jugador vs jugador.
@@ -86,7 +86,7 @@ You can also drag and drop the folder into the Vercel dashboard for a manual dep
 
 - Responsive 8x8 board.
 - Highlighted valid moves.
-- Animated piece placement and flipping.
+- Animated piece placement and color transformation.
 - Endgame animation for win, loss, or tie results.
 - Interface switchable between Spanish and English.
 - Player vs AI and player vs player modes.

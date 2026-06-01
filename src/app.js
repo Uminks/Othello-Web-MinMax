@@ -199,6 +199,8 @@ const state = {
   aiDepth: 3,
   history: [],
   lastMove: null,
+  lastFlips: [],
+  flipAnimationId: 0,
   legalMoves: [],
   isThinking: false,
   gameOver: false,
@@ -434,6 +436,9 @@ function renderBoard() {
   updateStaticText();
   state.legalMoves = getLegalMoves(state.board, state.currentPlayer);
   const legalKeys = new Set(state.legalMoves.map((move) => keyFor(move.row, move.col)));
+  const flippedKeys = new Map(
+    state.lastFlips.map((flip, index) => [keyFor(flip.row, flip.col), index]),
+  );
   boardElement.innerHTML = "";
 
   for (let row = 0; row < SIZE; row += 1) {
@@ -454,7 +459,15 @@ function renderBoard() {
 
       if (value !== EMPTY) {
         const disc = document.createElement("span");
-        disc.className = `disc ${value === BLACK ? "black" : "white"}`;
+        const flippedIndex = flippedKeys.get(keyFor(row, col));
+        const classNames = ["disc", value === BLACK ? "black" : "white"];
+
+        if (flippedIndex !== undefined) {
+          classNames.push("flipped", value === BLACK ? "from-white" : "from-black");
+          disc.style.setProperty("--flip-delay", `${Math.min(flippedIndex, 8) * 55}ms`);
+        }
+
+        disc.className = classNames.join(" ");
         cell.appendChild(disc);
       } else if (legal && canCurrentSidePlay()) {
         const hint = document.createElement("span");
@@ -636,6 +649,22 @@ function commitMove(move, player, note) {
   });
   state.board = applyMove(state.board, move, player);
   state.lastMove = { row: move.row, col: move.col };
+  state.lastFlips = move.flips.map(([row, col]) => ({ row, col }));
+  scheduleFlipCleanup();
+}
+
+function scheduleFlipCleanup() {
+  state.flipAnimationId += 1;
+  const animationId = state.flipAnimationId;
+
+  window.setTimeout(() => {
+    if (animationId !== state.flipAnimationId) return;
+    state.lastFlips = [];
+    document.querySelectorAll(".disc.flipped").forEach((disc) => {
+      disc.classList.remove("flipped", "from-black", "from-white");
+      disc.style.removeProperty("--flip-delay");
+    });
+  }, 1250);
 }
 
 function passTurn(player) {
@@ -710,6 +739,8 @@ function resetGame() {
   state.aiDepth = Number(difficultySelect.value);
   state.history = [];
   state.lastMove = null;
+  state.lastFlips = [];
+  state.flipAnimationId += 1;
   state.isThinking = false;
   state.gameOver = false;
   render();
@@ -728,6 +759,8 @@ function undoMove() {
     state.board = previous.board;
     state.currentPlayer = previous.player;
     state.lastMove = null;
+    state.lastFlips = [];
+    state.flipAnimationId += 1;
   }
 
   state.gameOver = false;
