@@ -2,6 +2,8 @@ const BLACK = 1;
 const WHITE = -1;
 const EMPTY = 0;
 const SIZE = 8;
+const FLIP_ANIMATION_MS = 850;
+const AI_MOVE_DELAY_MS = 1450;
 const DIRECTIONS = [
   [-1, -1],
   [-1, 0],
@@ -201,6 +203,7 @@ const state = {
   lastMove: null,
   lastFlips: [],
   flipAnimationId: 0,
+  aiTurnId: 0,
   legalMoves: [],
   isThinking: false,
   gameOver: false,
@@ -671,7 +674,7 @@ function scheduleFlipCleanup() {
   window.setTimeout(() => {
     if (animationId !== state.flipAnimationId) return;
     state.lastFlips = [];
-  }, 1250);
+  }, FLIP_ANIMATION_MS + 400);
 }
 
 function passTurn(player) {
@@ -721,10 +724,16 @@ function resolveTurn() {
 }
 
 function queueAiMove() {
+  state.aiTurnId += 1;
+  const turnId = state.aiTurnId;
   state.isThinking = true;
-  render();
+  renderHud();
 
   window.setTimeout(() => {
+    if (turnId !== state.aiTurnId || state.gameOver || state.currentPlayer === state.humanColor) {
+      return;
+    }
+
     const move = chooseAiMove(state.board, state.currentPlayer, state.aiDepth);
     if (move) {
       commitMove(move, state.currentPlayer, {
@@ -734,7 +743,7 @@ function queueAiMove() {
     }
     state.isThinking = false;
     advanceTurn();
-  }, 420);
+  }, AI_MOVE_DELAY_MS);
 }
 
 function resetGame() {
@@ -748,6 +757,7 @@ function resetGame() {
   state.lastMove = null;
   state.lastFlips = [];
   state.flipAnimationId += 1;
+  state.aiTurnId += 1;
   state.isThinking = false;
   state.gameOver = false;
   render();
@@ -768,6 +778,7 @@ function undoMove() {
     state.lastMove = null;
     state.lastFlips = [];
     state.flipAnimationId += 1;
+    state.aiTurnId += 1;
   }
 
   state.gameOver = false;
