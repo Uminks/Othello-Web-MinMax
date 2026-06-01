@@ -463,8 +463,13 @@ function renderBoard() {
         const classNames = ["disc", value === BLACK ? "black" : "white"];
 
         if (flippedIndex !== undefined) {
-          classNames.push("flipped", value === BLACK ? "from-white" : "from-black");
+          const fromColor = value === BLACK ? "white" : "black";
+          const toColor = value === BLACK ? "black" : "white";
+
+          classNames.push("flipped");
           disc.style.setProperty("--flip-delay", `${Math.min(flippedIndex, 8) * 55}ms`);
+          disc.appendChild(createDiscFace("front", fromColor));
+          disc.appendChild(createDiscFace("back", toColor));
         }
 
         disc.className = classNames.join(" ");
@@ -480,6 +485,12 @@ function renderBoard() {
   }
 
   renderHud();
+}
+
+function createDiscFace(side, color) {
+  const face = document.createElement("span");
+  face.className = `disc-face ${side} ${color}`;
+  return face;
 }
 
 function renderHud() {
@@ -660,10 +671,6 @@ function scheduleFlipCleanup() {
   window.setTimeout(() => {
     if (animationId !== state.flipAnimationId) return;
     state.lastFlips = [];
-    document.querySelectorAll(".disc.flipped").forEach((disc) => {
-      disc.classList.remove("flipped", "from-black", "from-white");
-      disc.style.removeProperty("--flip-delay");
-    });
   }, 1250);
 }
 
