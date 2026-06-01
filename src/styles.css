@@ -295,6 +295,7 @@ select:focus {
 }
 
 .board-frame {
+  position: relative;
   width: min(100%, 680px);
   aspect-ratio: 1;
   padding: clamp(10px, 2vw, 18px);
@@ -392,6 +393,162 @@ select:focus {
   animation: pulse 1600ms ease-in-out infinite;
 }
 
+.endgame-overlay {
+  position: absolute;
+  inset: clamp(10px, 2vw, 18px);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(9, 14, 14, 0.86), rgba(8, 13, 13, 0.72)),
+    rgba(7, 12, 12, 0.78);
+  backdrop-filter: blur(8px);
+  animation: overlayIn 260ms ease both;
+}
+
+.endgame-overlay[hidden] {
+  display: none;
+}
+
+.endgame-card {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  width: min(86%, 340px);
+  padding: clamp(18px, 4vw, 28px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 8px;
+  background: rgba(13, 18, 18, 0.84);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
+  text-align: center;
+  animation: resultPop 520ms cubic-bezier(0.18, 0.9, 0.24, 1.18) both;
+}
+
+.endgame-kicker {
+  color: var(--accent-strong);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.endgame-card strong {
+  margin-top: 8px;
+  font-size: clamp(2rem, 7vw, 4rem);
+  line-height: 0.95;
+}
+
+.endgame-card p {
+  max-width: 28ch;
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.endgame-score {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 18px 0;
+  font-size: clamp(1.8rem, 6vw, 3rem);
+  font-weight: 800;
+}
+
+.endgame-score span:first-child {
+  color: #e9edf0;
+}
+
+.endgame-score span:last-child {
+  color: #fff7e6;
+}
+
+.endgame-burst {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.endgame-burst span {
+  position: absolute;
+  width: 12px;
+  height: 62px;
+  border-radius: 999px;
+  background: var(--accent-strong);
+  opacity: 0;
+  transform-origin: center;
+}
+
+.endgame-overlay.win .endgame-burst span,
+.endgame-overlay.pvp .endgame-burst span {
+  animation: confetti 1200ms ease-out both;
+}
+
+.endgame-overlay.win .endgame-card,
+.endgame-overlay.pvp .endgame-card {
+  border-color: rgba(113, 240, 184, 0.68);
+}
+
+.endgame-overlay.lose .endgame-card {
+  border-color: rgba(255, 207, 95, 0.5);
+}
+
+.endgame-overlay.tie .endgame-card {
+  border-color: rgba(244, 240, 231, 0.5);
+}
+
+.endgame-overlay.lose {
+  background:
+    linear-gradient(135deg, rgba(20, 18, 12, 0.88), rgba(9, 12, 12, 0.76)),
+    rgba(7, 12, 12, 0.78);
+}
+
+.endgame-burst span:nth-child(1) {
+  top: 18%;
+  left: 13%;
+  transform: rotate(-28deg);
+}
+
+.endgame-burst span:nth-child(2) {
+  top: 12%;
+  right: 18%;
+  animation-delay: 80ms;
+  background: var(--warning);
+  transform: rotate(22deg);
+}
+
+.endgame-burst span:nth-child(3) {
+  bottom: 16%;
+  left: 18%;
+  animation-delay: 130ms;
+  background: #f4f0e7;
+  transform: rotate(34deg);
+}
+
+.endgame-burst span:nth-child(4) {
+  right: 12%;
+  bottom: 19%;
+  animation-delay: 170ms;
+  transform: rotate(-36deg);
+}
+
+.endgame-burst span:nth-child(5) {
+  top: 48%;
+  left: 7%;
+  animation-delay: 220ms;
+  background: var(--warning);
+  transform: rotate(78deg);
+}
+
+.endgame-burst span:nth-child(6) {
+  top: 45%;
+  right: 7%;
+  animation-delay: 260ms;
+  background: #f4f0e7;
+  transform: rotate(-72deg);
+}
+
 .activity-panel {
   display: flex;
   flex-direction: column;
@@ -474,6 +631,41 @@ select:focus {
   50% {
     opacity: 0.95;
     transform: scale(1);
+  }
+}
+
+@keyframes overlayIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes resultPop {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.86);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes confetti {
+  0% {
+    opacity: 0;
+    scale: 0.2;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    scale: 1.2;
+    translate: 0 86px;
   }
 }
 

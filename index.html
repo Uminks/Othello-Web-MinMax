@@ -8,7 +8,7 @@
       content="Othello moderno con IA minimax, animaciones y modo jugador contra jugador."
     />
     <title>Othello Minimax</title>
-    <link rel="stylesheet" href="./src/styles.css?v=20260601" />
+    <link rel="stylesheet" href="./src/styles.css?v=20260601b" />
   </head>
   <body>
     <main class="shell">
@@ -108,6 +108,29 @@
         <section class="board-section" aria-label="Tablero de Othello">
           <div class="board-frame">
             <div class="board" id="board" role="grid" aria-label="Tablero 8 por 8"></div>
+            <div class="endgame-overlay" id="endgameOverlay" aria-live="polite" hidden>
+              <div class="endgame-burst" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <div class="endgame-card">
+                <span class="endgame-kicker" id="endgameKicker">Resultado</span>
+                <strong id="endgameTitle">Ganan Negras</strong>
+                <p id="endgameDetail">Marcador final 32-32.</p>
+                <div class="endgame-score">
+                  <span id="endgameBlackScore">32</span>
+                  <span aria-hidden="true">:</span>
+                  <span id="endgameWhiteScore">32</span>
+                </div>
+                <button class="button primary" id="playAgainButton" type="button">
+                  Nueva partida
+                </button>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -121,6 +144,6 @@
       </section>
     </main>
 
-    <script type="module" src="./src/app.js?v=20260601"></script>
+    <script type="module" src="./src/app.js?v=20260601b"></script>
   </body>
 </html>

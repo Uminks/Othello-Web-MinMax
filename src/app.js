@@ -55,6 +55,13 @@ const blackMovesLabel = document.querySelector("#blackMovesLabel");
 const whiteMovesLabel = document.querySelector("#whiteMovesLabel");
 const emptyCellsLabel = document.querySelector("#emptyCellsLabel");
 const activityTitle = document.querySelector("#activityTitle");
+const endgameOverlay = document.querySelector("#endgameOverlay");
+const endgameKicker = document.querySelector("#endgameKicker");
+const endgameTitle = document.querySelector("#endgameTitle");
+const endgameDetail = document.querySelector("#endgameDetail");
+const endgameBlackScore = document.querySelector("#endgameBlackScore");
+const endgameWhiteScore = document.querySelector("#endgameWhiteScore");
+const playAgainButton = document.querySelector("#playAgainButton");
 
 const translations = {
   es: {
@@ -107,6 +114,16 @@ const translations = {
     difficultyCompetitive: "Competitiva",
     difficultyDeep: "Profunda",
     difficultyExpert: "Experta",
+    result: "Resultado",
+    youWin: "Ganaste",
+    youLose: "Perdiste",
+    pvpWinner: "Gana {winner}",
+    finalTieTitle: "Empate",
+    finalScore: "Marcador final {black}-{white}.",
+    playerVictoryDetail: "{winner} cierra la partida con ventaja.",
+    youWinDetail: "Dominaste el tablero y venciste a la IA.",
+    youLoseDetail: "La IA gana esta vez. Puedes ajustar la dificultad y volver a intentarlo.",
+    tieDetail: "Nadie pudo romper el equilibrio del tablero.",
     htmlLang: "es",
   },
   en: {
@@ -159,6 +176,16 @@ const translations = {
     difficultyCompetitive: "Competitive",
     difficultyDeep: "Deep",
     difficultyExpert: "Expert",
+    result: "Result",
+    youWin: "You win",
+    youLose: "You lose",
+    pvpWinner: "{winner} wins",
+    finalTieTitle: "Tie",
+    finalScore: "Final score {black}-{white}.",
+    playerVictoryDetail: "{winner} closes the game with the lead.",
+    youWinDetail: "You controlled the board and beat the AI.",
+    youLoseDetail: "The AI wins this time. Adjust the difficulty and try again.",
+    tieDetail: "Nobody broke the balance of the board.",
     htmlLang: "en",
   },
 };
@@ -446,6 +473,7 @@ function renderHud() {
   const counts = countPieces(state.board);
   const blackLegal = getLegalMoves(state.board, BLACK).length;
   const whiteLegal = getLegalMoves(state.board, WHITE).length;
+  const result = getGameResult(counts);
 
   blackScore.textContent = counts.black;
   whiteScore.textContent = counts.white;
@@ -465,15 +493,16 @@ function renderHud() {
   }
 
   if (state.gameOver) {
-    const winner =
-      counts.black === counts.white ? t("tie") : counts.black > counts.white ? t("winnerBlack") : t("winnerWhite");
+    const winner = result.winnerLabel;
     turnLabel.textContent = t("gameOver");
     gameMessage.textContent = `${winner} ${counts.black}-${counts.white}.`;
     aiBadge.textContent = t("final");
+    renderEndgame(result, counts);
   } else if (state.isThinking) {
     turnLabel.textContent = t("aiThinkingTitle");
     gameMessage.textContent = t("thinking");
     aiBadge.textContent = t("aiThinking");
+    hideEndgame();
   } else {
     const color = colorName(state.currentPlayer);
     turnLabel.textContent = t("turn", { color });
@@ -481,11 +510,67 @@ function renderHud() {
       ? t("chooseMove")
       : t("noMoves");
     aiBadge.textContent = state.mode === "ai" ? t("depth", { depth: state.aiDepth }) : t("pvp");
+    hideEndgame();
   }
 
   undoButton.disabled = state.history.length === 0 || state.isThinking;
   playerColorSelect.disabled = state.mode === "pvp" || state.isThinking;
   difficultySelect.disabled = state.mode === "pvp" || state.isThinking;
+}
+
+function getGameResult(counts = countPieces(state.board)) {
+  const winner =
+    counts.black === counts.white ? EMPTY : counts.black > counts.white ? BLACK : WHITE;
+  const winnerLabel =
+    winner === EMPTY ? t("tie") : winner === BLACK ? t("winnerBlack") : t("winnerWhite");
+
+  if (winner === EMPTY) {
+    return {
+      winner,
+      winnerLabel,
+      title: t("finalTieTitle"),
+      detail: t("tieDetail"),
+      tone: "tie",
+    };
+  }
+
+  if (state.mode === "ai") {
+    const humanWon = winner === state.humanColor;
+    return {
+      winner,
+      winnerLabel,
+      title: humanWon ? t("youWin") : t("youLose"),
+      detail: humanWon ? t("youWinDetail") : t("youLoseDetail"),
+      tone: humanWon ? "win" : "lose",
+    };
+  }
+
+  return {
+    winner,
+    winnerLabel,
+    title: t("pvpWinner", { winner: winner === BLACK ? t("playerOne") : t("playerTwo") }),
+    detail: t("playerVictoryDetail", { winner: winnerLabel }),
+    tone: "pvp",
+  };
+}
+
+function renderEndgame(result, counts) {
+  endgameOverlay.hidden = false;
+  endgameOverlay.className = `endgame-overlay ${result.tone}`;
+  endgameKicker.textContent = t("result");
+  endgameTitle.textContent = result.title;
+  endgameDetail.textContent = `${result.detail} ${t("finalScore", {
+    black: counts.black,
+    white: counts.white,
+  })}`;
+  endgameBlackScore.textContent = counts.black;
+  endgameWhiteScore.textContent = counts.white;
+  playAgainButton.textContent = t("newGame");
+}
+
+function hideEndgame() {
+  endgameOverlay.hidden = true;
+  endgameOverlay.className = "endgame-overlay";
 }
 
 function renderActivity() {
@@ -666,5 +751,6 @@ playerColorSelect.addEventListener("change", resetGame);
 difficultySelect.addEventListener("change", resetGame);
 newGameButton.addEventListener("click", resetGame);
 undoButton.addEventListener("click", undoMove);
+playAgainButton.addEventListener("click", resetGame);
 
 resetGame();
