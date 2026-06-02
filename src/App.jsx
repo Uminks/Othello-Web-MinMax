@@ -452,7 +452,7 @@ function Disc({ value, flippedIndex }) {
 
   return (
     <motion.span
-      className="disc disc-3d"
+      className={`disc disc-3d ${color}`}
       style={{ "--flip-delay": `${Math.min(flippedIndex, 8) * 0.055}s` }}
       initial={{ rotateY: 0, y: 0, scale: 1 }}
       animate={{ rotateY: 180, y: [0, -3, 0], scale: [1, 0.965, 1] }}

@@ -1,11 +1,11 @@
 :root {
   color-scheme: dark;
-  --bg: #101114;
-  --panel: rgba(245, 248, 246, 0.08);
-  --panel-strong: rgba(245, 248, 246, 0.14);
+  --bg: #17120d;
+  --panel: rgba(42, 31, 21, 0.54);
+  --panel-strong: rgba(70, 48, 30, 0.62);
   --line: rgba(255, 255, 255, 0.15);
   --text: #f7faf9;
-  --muted: #a8b2af;
+  --muted: #c4bbb0;
   --accent: #43d99d;
   --accent-strong: #8df6c4;
   --warning: #f5cd62;
@@ -21,6 +21,7 @@
 }
 
 body {
+  position: relative;
   min-height: 100vh;
   margin: 0;
   color: var(--text);
@@ -33,15 +34,34 @@ body {
     "Segoe UI",
     sans-serif;
   background:
-    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(0deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    radial-gradient(circle at 24% 18%, rgba(67, 217, 157, 0.16), transparent 28rem),
-    linear-gradient(135deg, #101114 0%, #17211e 48%, #101114 100%);
+    linear-gradient(90deg, rgba(16, 10, 5, 0.34), rgba(16, 10, 5, 0.12)),
+    radial-gradient(circle at 24% 18%, rgba(67, 217, 157, 0.2), transparent 26rem),
+    repeating-linear-gradient(
+      90deg,
+      #2a1a0f 0,
+      #3d2818 26px,
+      #2b1a10 54px,
+      #53361f 92px,
+      #301e12 128px
+    ),
+    linear-gradient(135deg, rgba(18, 13, 9, 0.7), rgba(17, 18, 16, 0.48));
   background-size:
-    42px 42px,
-    42px 42px,
+    auto,
+    auto,
     auto,
     auto;
+  background-attachment: fixed;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: url("/aside-bg.jpg") center / 420px 672px repeat;
+  opacity: 0.16;
+  filter: saturate(0.8) contrast(1.08);
 }
 
 button,
@@ -137,9 +157,13 @@ h2 {
   padding: 16px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: rgba(9, 14, 14, 0.66);
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(18px);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 42%),
+    var(--panel);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    var(--shadow);
+  backdrop-filter: blur(14px) saturate(1.12);
 }
 
 .control-panel {
@@ -155,7 +179,7 @@ h2 {
   min-height: 76px;
   padding: 12px;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(15, 20, 18, 0.34);
 }
 
 .status-card p {
@@ -216,7 +240,7 @@ select {
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 0 12px;
-  background: #151a1b;
+  background: rgba(18, 22, 20, 0.86);
   outline: none;
 }
 
@@ -263,7 +287,7 @@ select:disabled {
 
 .button.ghost {
   border-color: var(--line);
-  background: rgba(255, 255, 255, 0.07);
+  background: rgba(18, 22, 20, 0.42);
 }
 
 .metrics {
@@ -301,12 +325,20 @@ select:disabled {
   width: min(100%, 680px);
   aspect-ratio: 1;
   padding: clamp(10px, 2vw, 18px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 240, 210, 0.26);
   border-radius: 8px;
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.12), transparent),
-    #101615;
-  box-shadow: var(--shadow);
+    linear-gradient(135deg, rgba(255, 255, 255, 0.14), transparent 40%),
+    linear-gradient(90deg, rgba(84, 54, 30, 0.44), rgba(34, 23, 16, 0.62)),
+    url("/aside-bg.jpg");
+  background-size:
+    auto,
+    auto,
+    460px 736px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -16px 30px rgba(28, 14, 7, 0.28),
+    var(--shadow);
 }
 
 .board {
@@ -317,9 +349,14 @@ select:disabled {
   height: auto;
   aspect-ratio: 1;
   overflow: hidden;
-  border: 2px solid rgba(0, 0, 0, 0.45);
+  border: 2px solid rgba(24, 14, 8, 0.66);
   border-radius: 8px;
-  background: var(--board-dark);
+  background:
+    radial-gradient(circle at 30% 18%, rgba(255, 255, 255, 0.12), transparent 28%),
+    var(--board-dark);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 12px 30px rgba(0, 0, 0, 0.24);
 }
 
 .cell {
@@ -336,7 +373,8 @@ select:disabled {
   border: 1px solid rgba(4, 45, 34, 0.72);
   appearance: none;
   background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.09), transparent 42%),
+    radial-gradient(circle at 28% 20%, rgba(255, 255, 255, 0.12), transparent 36%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.08), transparent 42%),
     var(--board);
   cursor: default;
 }
@@ -376,23 +414,31 @@ select:disabled {
   border-radius: 50%;
   transform-style: preserve-3d;
   box-shadow:
-    inset 0 8px 16px rgba(255, 255, 255, 0.12),
-    inset 0 -10px 14px rgba(0, 0, 0, 0.28),
-    0 9px 14px rgba(0, 0, 0, 0.24);
+    inset 0 9px 15px rgba(255, 255, 255, 0.16),
+    inset 0 -11px 15px rgba(0, 0, 0, 0.34),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.08),
+    0 10px 14px rgba(0, 0, 0, 0.24);
 }
 
 .disc.black {
-  background: radial-gradient(circle at 35% 25%, #6e7781, var(--black) 58%);
+  background:
+    radial-gradient(circle at 32% 24%, rgba(255, 255, 255, 0.34), transparent 0.8rem),
+    radial-gradient(circle at 37% 28%, #58606b, var(--black) 62%);
 }
 
 .disc.white {
-  background: radial-gradient(circle at 35% 24%, #ffffff, var(--white) 62%);
+  background:
+    radial-gradient(circle at 32% 24%, rgba(255, 255, 255, 0.92), transparent 0.85rem),
+    radial-gradient(circle at 38% 30%, #ffffff, var(--white) 62%);
 }
 
 .disc-3d {
-  background: transparent;
-  box-shadow: none;
-  filter: drop-shadow(0 12px 14px rgba(0, 0, 0, 0.28));
+  overflow: visible;
+  box-shadow:
+    inset 0 9px 15px rgba(255, 255, 255, 0.16),
+    inset 0 -11px 15px rgba(0, 0, 0, 0.34),
+    0 10px 14px rgba(0, 0, 0, 0.24);
+  will-change: transform;
 }
 
 .disc-face {
@@ -401,17 +447,21 @@ select:disabled {
   border-radius: 50%;
   backface-visibility: hidden;
   box-shadow:
-    inset 0 8px 16px rgba(255, 255, 255, 0.12),
-    inset 0 -10px 14px rgba(0, 0, 0, 0.28),
-    0 9px 14px rgba(0, 0, 0, 0.24);
+    inset 0 9px 15px rgba(255, 255, 255, 0.16),
+    inset 0 -11px 15px rgba(0, 0, 0, 0.34),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.08);
 }
 
 .disc-face.black {
-  background: radial-gradient(circle at 35% 25%, #6e7781, var(--black) 58%);
+  background:
+    radial-gradient(circle at 32% 24%, rgba(255, 255, 255, 0.34), transparent 0.8rem),
+    radial-gradient(circle at 37% 28%, #58606b, var(--black) 62%);
 }
 
 .disc-face.white {
-  background: radial-gradient(circle at 35% 24%, #ffffff, var(--white) 62%);
+  background:
+    radial-gradient(circle at 32% 24%, rgba(255, 255, 255, 0.92), transparent 0.85rem),
+    radial-gradient(circle at 38% 30%, #ffffff, var(--white) 62%);
 }
 
 .disc-face.front {
