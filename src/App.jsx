@@ -19,6 +19,7 @@ import { createTranslator, translations } from "./i18n.js";
 
 const FLIP_ANIMATION_MS = 760;
 const AI_MOVE_DELAY_MS = 1450;
+const PASS_TURN_DELAY_MS = 900;
 
 const initialGameState = {
   board: createInitialBoard(),
@@ -71,7 +72,45 @@ export default function App() {
   }, [game.lastFlips]);
 
   useEffect(() => {
-    if (game.gameOver || game.mode !== "ai" || game.currentPlayer === game.humanColor) return undefined;
+    if (game.gameOver || game.isThinking || legalMoves.length > 0) return undefined;
+
+    const playerWithoutMoves = game.currentPlayer;
+    const timer = window.setTimeout(() => {
+      setGame((current) => {
+        if (
+          current.gameOver ||
+          current.isThinking ||
+          current.currentPlayer !== playerWithoutMoves
+        ) {
+          return current;
+        }
+
+        if (isTerminal(current.board)) {
+          aiTurnId.current += 1;
+          return { ...current, gameOver: true, isThinking: false, lastFlips: [] };
+        }
+
+        if (getLegalMoves(current.board, current.currentPlayer).length > 0) {
+          return current;
+        }
+
+        aiTurnId.current += 1;
+        return passCurrentTurn(current);
+      });
+    }, PASS_TURN_DELAY_MS);
+
+    return () => window.clearTimeout(timer);
+  }, [game.board, game.currentPlayer, game.gameOver, game.isThinking, legalMoves.length]);
+
+  useEffect(() => {
+    if (
+      game.gameOver ||
+      game.mode !== "ai" ||
+      game.currentPlayer === game.humanColor ||
+      legalMoves.length === 0
+    ) {
+      return undefined;
+    }
 
     aiTurnId.current += 1;
     const turnId = aiTurnId.current;
@@ -99,7 +138,7 @@ export default function App() {
     }, AI_MOVE_DELAY_MS);
 
     return () => window.clearTimeout(timer);
-  }, [game.currentPlayer, game.gameOver, game.humanColor, game.mode, t]);
+  }, [game.currentPlayer, game.gameOver, game.humanColor, game.mode, legalMoves.length, t]);
 
   function resetGame(next = {}) {
     aiTurnId.current += 1;
@@ -298,23 +337,30 @@ function resolveAfterTurn(nextGame) {
   while (!isTerminal(resolved.board)) {
     const moves = getLegalMoves(resolved.board, resolved.currentPlayer);
     if (moves.length > 0) return resolved;
-    resolved = {
-      ...resolved,
-      history: [
-        ...resolved.history,
-        {
-          board: cloneBoard(resolved.board),
-          player: resolved.currentPlayer,
-          move: "pass",
-          noteKey: "passTurn",
-          noteValues: {},
-        },
-      ],
-      currentPlayer: opponent(resolved.currentPlayer),
-    };
+    resolved = passCurrentTurn(resolved);
   }
 
   return { ...resolved, gameOver: true, isThinking: false };
+}
+
+function passCurrentTurn(current) {
+  return {
+    ...current,
+    history: [
+      ...current.history,
+      {
+        board: cloneBoard(current.board),
+        player: current.currentPlayer,
+        move: "pass",
+        noteKey: "passTurn",
+        noteValues: {},
+      },
+    ],
+    currentPlayer: opponent(current.currentPlayer),
+    lastMove: null,
+    lastFlips: [],
+    isThinking: false,
+  };
 }
 
 function getGameResult(game, counts, t) {
